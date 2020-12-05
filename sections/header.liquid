@@ -2,15 +2,17 @@
     assign announcementBar = section.settings.show_announcement
     assign announcementLink = section.settings.announcement_link
     assign announcementText = section.settings.announcement_text
+    assign announcementBgColor = section.settings.announcement_bg_color
+    assign announcementColor = section.settings.announcement_color
 -%}
 
 <section data-section-id="{{ section.id }}">
   {% if announcementBar %}
-    <div>
+    <div class="d-flex justify-content-center" style="background-color: {{announcementBgColor}}">
         {% if announcementLink != blank %}
             <a href="{{ announcementLink }}">
         {% endif %}
-            <span>
+            <span style="color:{{announcementColor}}">
                 {{ announcementText | escape }}
             </span>
         {% if announcementLink != blank %}
@@ -90,36 +92,6 @@
         "unit": "px",
         "label": "Custom logo width",
         "default": 100
-      },
-      {
-        "type": "header",
-        "content": "Shipping Bar"
-      },
-      {
-        "type": "checkbox",
-        "id": "is_free_shipping_bar",
-        "label": "free shipping bar",
-        "default": false
-      },
-      {
-        "type": "text",
-        "id": "promote_free_shipping_txt",
-        "label": "message to promote free shipping"
-      },
-      {
-        "type": "text",
-        "id": "unlocked_free_shipping_txt",
-        "label": "message for unlock free shipping"
-      },
-      {
-        "type": "range",
-        "id": "free_shipping_treshold",
-        "min": 0,
-        "max": 200,
-        "step": 5,
-        "unit": "Eur",
-        "label": "treshold free shipping",
-        "default": 50
       }
     ]
   }
