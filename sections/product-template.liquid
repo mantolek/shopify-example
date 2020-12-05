@@ -1,0 +1,98 @@
+{%- liquid
+    assign current_variant = product.selected_or_first_available_variant
+    assign featured_image = current_variant.featured_image | default: product.featured_image
+  -%}
+
+{%- style -%}
+
+.slick-prev::before,
+.slick-next::before {
+    color: #000 !important;
+}
+
+{%- endstyle -%}
+
+<section data-section-id="{{ section.id }}" data-section-type="product">
+
+    <div class="container my-4">
+        <div class="row">
+            {% comment %}
+                LEFT PART
+            {% endcomment %}
+            <div class="col-md-7">
+                {% comment %}
+                    BIG PHOTO
+                {% endcomment %}
+                <div class="product-slider">
+                    {% if product.images.size >= 1 %}
+                        {% for image in product.images %}
+                            <div>
+                                <a href="{{ image.src | img_url: '480x480' }}" data-thumbnail-id="{{ image.id }}" data-product-single-thumbnail {% if featured_image == image %} aria-current="true" {% endif %}>
+                                    <img class="img-fluid" src="{{ image.src | img_url: '800x600', crop:'center' }}" alt="{{ image.alt | escape }}">
+                                </a>
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                </div>
+
+                {% comment %}
+                    SMALL PHOTO
+                {% endcomment %}
+                <div class="product-slider-nav mt-4">
+                    {% if product.images.size >= 1 %}
+                        {% for image in product.images %}
+                            <img class="img-fluid px-3" width="50" src="{{ image.src | img_url: '200x150', crop:'center' }}" alt="{{ image.alt | escape }}">
+                        {% endfor %}
+                    {% endif %}
+                </div>
+            </div>
+
+            {% comment %} 
+                RIGHT PART
+            {% endcomment %}
+            <div class="col-md-5">
+                <h1>{{ product.title }}</h1>
+              
+                <div class="my-2">
+                    {% comment %} 
+                        SHOW CURRENT PRICE 
+                    {% endcomment %}
+                    <span>
+                        {{ current_variant.price | money }}
+                    </span>
+
+                    {% if product.compare_at_price_max > product.price %}
+                        <span class="visually-hidden" data-compare-text>{{ 'products.product.regular_price' | t }}</span>
+                        <s data-compare-price>
+                            {% if current_variant.compare_at_price > current_variant.price %}
+                                {{ current_variant.compare_at_price | money }}
+                            {% endif %}
+                        </s>
+                    {% endif %}
+                </div>
+
+                {% include 'product-form' %}
+
+                <div>
+                    {{ product.description }}
+                </div>
+            </div>
+        </div>
+    </div>
+
+</section>
+
+{% schema %}
+{
+  "name": "Product Form",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "show_buy_now",
+      "label": "Show dynamic checkout button",
+      "default": false
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,45 @@
+<div>
+  <ul class="post_width {{ post_width }} p-0 justify-content-between align-items-center">
+    {% for i in (1..section.settings.post_limit)  %}
+      <li class="blog-post__item p-3">
+        {% comment %}
+          IMAGE
+        {% endcomment %}
+          <a href="#!">
+            {{ 'product-1' | placeholder_svg_tag }}
+            <h3 class='text-dark mb-2'>Title</h3>
+          </a>
+
+        <div>
+          <div class="d-flex justify-content-between my-2">
+            {% comment %}
+              AUTHOR
+            {% endcomment %}
+              <p>Author Name</p>
+
+            {% comment %}
+              DATE
+            {% endcomment %}
+              <p>
+                20.12.2020
+              </p>
+          </div>
+
+          {% comment %}
+            TAGS
+          {% endcomment %}
+            <ul class="list-group">
+                <li class="list-group-item"><a href="#!">Tag</a></li>
+            </ul>
+
+            <div class="text-center mt-4">
+              <a href="#!" aria-label="{{ 'blogs.article.read_more_title' | t: title: 'title' }}" class="btn btn-dark">{{ 'blogs.article.read_more' | t }}</a>
+            </div>
+        </div>
+      </li>
+    {% endfor %}
+  </ul>
+</div>
+
+
+

@@ -1,0 +1,28 @@
+svg {
+  fill: #9a9da0;
+}
+
+a[href="/cart"]:hover {
+  svg {
+    fill: rgba(255, 255, 255, 0.75);
+  }
+  span {
+    color: rgba(255, 255, 255, 0.75);
+  }
+}
+
+.container {
+  min-height: 23rem;
+}
+
+@media only screen and(min-width: 576px) {
+  .footer_element {
+    width: calc(50% - 2rem) !important;
+  }
+}
+
+@media only screen and(min-width: 960px) {
+  .footer_element {
+    width: calc(33% - 2rem) !important;
+  }
+}

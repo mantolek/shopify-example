@@ -1,0 +1,90 @@
+<!-- /templates/customers/login.liquid -->
+
+{% form 'create_customer' %}
+<input name="checkout_url" type="hidden" value="/" />
+
+{{ form.errors | default_errors }}
+
+<div class="d-flex flex-column align-items-center">
+  <h1 class='my-4'>{{ 'customer.register.title' | t }}</h1>
+
+  <div class="col-md-6">
+    <label class="label-hidden" for="CustomerEmail">
+      {{ 'customer.register.first_name' | t }}
+    </label>
+    <input
+      type="text"
+      name="customer[first_name]"
+      id="FirstName"
+      class="form-control"
+      placeholder="{{ 'customer.register.first_name' | t }}"
+      spellcheck="false"
+      autocomplete="off"
+      autocapitalize="off"
+      autofocus
+    />
+  </div>
+
+  <div class="col-md-6">
+    <label class="label-hidden" for="CustomerEmail">
+      {{ 'customer.register.last_name' | t }}
+    </label>
+    <input
+      type="text"
+      name="customer[last_name]"
+      id="FirstName"
+      class="form-control"
+      placeholder="{{ 'customer.register.last_name' | t }}"
+      spellcheck="false"
+      autocomplete="off"
+      autocapitalize="off"
+      autofocus
+    />
+  </div>
+
+  <div class="col-md-6">
+    <label class="label-hidden" for="CustomerEmail">
+      {{ 'customer.login.email' | t }}
+    </label>
+    <input
+      type="email"
+      name="customer[email]"
+      id="CustomerEmail"
+      class="{% if form.errors contains 'email' %}input-error{% endif %} form-control"
+      placeholder="{{ 'customer.login.email' | t }}"
+      spellcheck="false"
+      autocomplete="off"
+      autocapitalize="off"
+      autofocus
+    />
+  </div>
+  
+  <div class="col-md-6">
+    {% if form.password_needed %}
+    <label class="label-hidden" for="CustomerPassword">
+      {{ 'customer.login.password' | t }}
+    </label>
+    <input
+      type="password"
+      name="customer[password]"
+      id="CustomerPassword"
+      class="{% if form.errors contains 'password' %}input-error{% endif %} form-control"
+      placeholder="{{ 'customer.login.password' | t }}"
+    />
+    {% endif %}
+  </div>
+
+  <input
+    type="submit"
+    class="btn btn-dark mt-3"
+    value="{{ 'customer.register.submit' | t }}"
+  />
+
+  <div class="mt-2">
+    <a href="{{ shop.url }}" class="text-dark">{{
+      'customer.register.cancel' | t
+    }}</a>
+  </div>
+</div>
+
+{% endform %}

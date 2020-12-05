@@ -1,0 +1,62 @@
+{% form 'product', product %}
+
+    <select class="form-control" id="variant_id" name="id">
+        {% comment %} 
+          VARIANTS
+        {% endcomment %}
+        {% for variant in product.variants %}
+            {% if variant.available == false %}
+                {% continue %}
+            {% else %}
+                <option {% if variant == current_variant %} selected="selected" {% endif %} {% unless variant.available %} disabled="disabled" {% endunless %} value="{{ variant.id }}">
+                    {{ variant.title }}
+                </option>
+            {% endif %}
+        {% endfor %}
+    </select>
+
+    {% comment %} 
+      NO JS SUPPORT
+    {% endcomment %}
+    <noscript>
+        <select name="id">
+            {% for variant in product.variants %}
+                <option {% if variant == current_variant %} selected="selected" {% endif %} {% unless variant.available %} disabled="disabled" {% endunless %} value="{{ variant.id }}">
+                    {{ variant.title }}
+                </option>
+            {% endfor %}
+        </select>
+    </noscript>
+
+    <div class="form-group">
+        <div class="row align-items-end">
+
+          {% comment %} 
+            QUANTITY
+          {% endcomment %}
+          <div class="col-md-6">
+              <label class="form-label" for="quantity">{{ 'products.product.quantity' | t }}</label>
+              <input class="form-control" id="quantity" min="1" name="quantity" type="number" value="1">
+          </div>
+
+          {% comment %} 
+            ADD TO CART BUTTON 
+          {% endcomment %}
+          <div class="col-md-6">
+              <button type="submit" class="btn btn-dark btn-add-cart" name="add" {% unless current_variant.available %} disabled="disabled" {% endunless %}>
+                  <span data-submit-button-text>
+                      {{ 'products.product.add_to_cart' | t }}
+                  </span>
+              </button>
+          </div>
+
+        </div>
+
+          {% comment %}
+            BUY NOW BTN
+        {% endcomment %}
+        {%- if section.settings.show_buy_now and product.available -%}
+            {{ form | payment_button }}
+        {%- endif -%}
+    </div>
+{% endform %}

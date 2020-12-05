@@ -1,0 +1,168 @@
+{%- liquid
+  assign blog = blogs[section.settings.blog] 
+-%}
+
+{% case section.settings.post_limit %}
+    {% when 4 %}
+        {%- assign post_width = 'post_width-4' -%}
+    {% when 3 %}
+        {%- assign post_width = 'post_width-3' -%}
+    {% when 2 %}
+        {%- assign post_width = 'post_width-2' -%}
+    {% when 1 %}
+        {%- assign post_width = 'post_width-1' -%}
+{% endcase %}
+
+<section class='my-3'>
+    {% comment %}
+      TITLE
+    {% endcomment %}
+    {% if section.settings.title != blank %}
+        <h2>{{ section.settings.title | escape }}</h2>
+    {% endif %}
+
+    <div class="featured-blog featured-blog--{{ section.id }}">
+
+      {% if blog.articles_count != 0 and blog.articles_count != empty %}
+
+          <ul class="post_width {{ post_width }} p-0 justify-content-between align-items-center">
+              {% for article in blog.articles limit: post_limit %}
+                  <li class="blog-post__item p-3">
+
+                      {% comment %}
+                        IMAGE
+                      {% endcomment %}
+                      {% if section.settings.blog_show_image != blank %}
+                          <a href="{{ article.url }}">
+                              {% if article.image %}
+                                  <img class="img-fluid" src="{{ article.image.src | img_url: '800x600', crop:'center' }}" alt="{{ article.image.alt | escape }}">
+                              {% endif %}
+                              <h3 class='text-dark my-2'>{{ article.title }}</h3>
+                          </a>
+                      {% endif %}
+
+                      <div>
+                          <div class="d-flex justify-content-between mb-2">
+                            {% comment %}
+                              AUTHOR
+                            {% endcomment %}
+                            {% if section.settings.blog_show_author %}
+                                <p>{{ 'blogs.article.by_author' | t: author: article.author }}</p>
+                            {% endif %}
+
+                            {% comment %}
+                              DATE
+                            {% endcomment %}
+                            {% if section.settings.blog_show_date %}
+                                <p>
+                                    {{ article.published_at | time_tag: format: 'month_day_year' }}
+                                </p>
+                            {% endif %}
+                          </div>
+                          
+                          {% comment %}
+                            TAGS
+                          {% endcomment %}
+                          <ul class="list-group" style='overflow-y: auto; max-height: 6rem; min-height: 6rem'>
+                            {% if article.tags.size > 0 %}
+                                {% for tag in article.tags %}
+                                    <li class="list-group-item">
+                                        <a href="{{ blog.url }}/tagged/{{ tag | handle }}">{{ tag }}</a>
+                                    </li>
+                                {% endfor %}
+                            {% endif %}
+                          </ul>
+
+                          <div class="text-center mt-4">
+                            <a href="{{ article.url }}" class="btn btn-dark">
+                                {{ 'blogs.article.read_more' | t }}
+                            </a>
+                        </div>
+                      </div>
+                  </li>
+              {% endfor %}
+          </ul>
+      {% else %}
+          {% comment %}
+            IF NO BLOG ARTICLE - SHOW DEFAULT
+          {% endcomment %}
+          {% include 'onboarding-featured-blog' %}
+      {% endif %}
+
+    </div>
+
+    {% comment %}
+      SHOW ALL BUTTON
+    {% endcomment %}
+    {% if section.settings.show_view_all %}
+        <div class="text-center">
+            <a href="{% if blog.url %} {{blog.url}} {% else %} #! {% endif %}" class="btn btn-dark">
+                {{ 'blogs.article.view_all' | t }}
+            </a>
+        </div>
+    {% endif %}
+
+</section>
+
+{% schema %}
+
+{
+    "name": "Blog posts",
+    "settings": [
+        {
+            "type": "header",
+            "content": "Blog content"
+        }, {
+            "type": "text",
+            "id": "title",
+            "label": "Heading",
+            "default": "Blog posts"
+        }, {
+            "id": "blog",
+            "type": "blog",
+            "label": "Blog"
+        }, {
+            "type": "range",
+            "id": "post_limit",
+            "label": "Posts",
+            "min": 1,
+            "max": 4,
+            "step": 1,
+            "default": 1
+        }, {
+            "type": "header",
+            "content": "Blog details"
+        }, {
+            "type": "checkbox",
+            "id": "blog_show_author",
+            "label": "Show author",
+            "default": false
+        }, {
+            "type": "checkbox",
+            "id": "blog_show_date",
+            "label": "Show date",
+            "default": true
+        }, {
+            "type": "checkbox",
+            "id": "blog_show_image",
+            "label": "Blog show image",
+            "default": true
+        }, {
+            "type": "header",
+            "content": "Other"
+        }, {
+            "type": "checkbox",
+            "id": "show_view_all",
+            "label": "Show 'View all' button",
+            "default": true
+        }
+    ],
+    "presets": [
+        {
+            "name": "Featured blog",
+            "category": "Blog"
+        }
+    ]
+}
+
+{% endschema %}

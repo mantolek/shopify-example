@@ -1,0 +1,172 @@
+{% style %}
+
+.footer_style-2 {
+    border-top: 1rem solid #343a40;
+}
+
+.footer_style-1 {
+    border: 1rem solid #343a40;
+    padding: 1rem;
+}
+
+.footer_element {
+    width: 100%;
+    margin: 1rem;
+    background: #fbfbfb;
+    padding: 1rem;
+    border: 1px solid #e6e6e6;
+}
+
+{% endstyle %}
+
+<footer class="{{section.settings.footer_style}}">
+    <div class="d-flex flex-wrap">
+
+        {% for block in section.blocks %}
+            {% case block.type %}
+
+                {%- when 'contact_details' -%}
+                    <div class="footer_element">
+                        <h3 style="color:{{ block.settings.color_title }}">{{block.settings.title}}</h3>
+                        <p>{{block.settings.phone}}</p>
+                        <p>{{block.settings.email}}</p>
+                        <p style="color:{{ block.settings.color_note }}">{{block.settings.note}}</p>
+                    </div>
+
+                {%- when 'newsletter' -%}
+                    {% form 'customer', class: 'footer_element', id: form.id %}
+                        {% render 'form_status', form: form, form_id: formId %}
+
+                        {% unless form.posted_successfully? %}
+                            <input name="contact[tags]" type="hidden" value="newsletter">
+                            <div class="form-group">
+                                <label for="newsletter_email">{{block.settings.title}}</label>
+                                <input type="email" class="form-control" id="newsletter_email" name="contact[email]" value="{% if customer %}{{ customer.email }}{% endif %}" placeholder="{{ block.settings.email }}" autocorrect="off" autocapitalize="off">
+                            </div>
+
+                            <p>{{block.settings.description}}</p>
+
+                            <input type="submit" class="btn btn-dark mt-3" value="{{ 'general.newsletter_form.submit' | t }}"/>
+                        {% endunless %}
+                    {% endform %}
+
+                {%- when 'footer_bottom' -%}
+                    <div class="footer_element">
+                        {% if block.settings.footer_image != blank %}
+                            <img class="lazyload" src="{{ block.settings.footer_image | img_url: '250x' }}"/>
+                        {% else %}
+                            {{ 'image' | placeholder_svg_tag: 'placeholder' }}
+                        {% endif %}
+                        <p style="color:{{ block.settings.text_color }}">{{block.settings.text}}</p>
+                    </div>
+            {% endcase %}
+        {% endfor %}
+
+    </div>
+</footer>
+
+{% schema %}
+
+{
+    "name": "Footer",
+    "settings": [
+        {
+            "type": "header",
+            "content": "Footer Style"
+        }, {
+            "type": "select",
+            "id": "footer_style",
+            "label": "Footer style",
+            "options": [
+                {
+                    "value": "footer_style-1",
+                    "label": "Style 1"
+                }, {
+                    "value": "footer_style-2",
+                    "label": "Style 2"
+                }
+            ],
+            "default": "footer_style-1"
+        }
+    ],
+    "blocks": [
+        {
+            "type": "contact_details",
+            "name": "Contact Details",
+            "settings": [
+                {
+                    "type": "text",
+                    "id": "title",
+                    "label": "Title",
+                    "default": "Contact Details"
+                }, {
+                    "type": "text",
+                    "id": "phone",
+                    "label": "Phone Number",
+                    "default": "55 - 55 - 55 - 484"
+                }, {
+                    "type": "text",
+                    "id": "email",
+                    "label": "Email",
+                    "default": "hello@email.com"
+                }, {
+                    "type": "textarea",
+                    "id": "note",
+                    "label": "Additional note"
+                }, {
+                    "type": "color",
+                    "id": "color_title",
+                    "label": "Text color",
+                    "default": "#000000"
+                }, {
+                    "type": "color",
+                    "id": "color_note",
+                    "label": "Note color",
+                    "default": "#000000"
+                }
+            ]
+        }, {
+            "type": "newsletter",
+            "name": "Newsletter Form",
+            "limit": 1,
+            "settings": [
+                {
+                    "type": "text",
+                    "id": "title",
+                    "label": "Title",
+                    "default": "Newsletter"
+                }, {
+                    "type": "text",
+                    "id": "email",
+                    "label": "Email Placeholder",
+                    "default": "hello@email.com"
+                }, {
+                    "type": "textarea",
+                    "id": "description",
+                    "label": "Description",
+                    "default": "Random Description"
+                }
+            ]
+        }, {
+            "type": "footer_bottom",
+            "name": "Footer bottom",
+            "settings": [
+                {
+                    "type": "textarea",
+                    "id": "text",
+                    "label": "Title"
+                }, {
+                    "type": "color",
+                    "id": "text_color",
+                    "label": "Text Color"
+                }, {
+                    "type": "image_picker",
+                    "id": "footer_image",
+                    "label": "Custom Image"
+                }
+            ]
+        }
+    ]
+}
+
+{% endschema %} 

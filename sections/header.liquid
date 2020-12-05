@@ -1,0 +1,126 @@
+{%- liquid
+    assign announcementBar = section.settings.show_announcement
+    assign announcementLink = section.settings.announcement_link
+    assign announcementText = section.settings.announcement_text
+-%}
+
+<section data-section-id="{{ section.id }}">
+  {% if announcementBar %}
+    <div>
+        {% if announcementLink != blank %}
+            <a href="{{ announcementLink }}">
+        {% endif %}
+            <span>
+                {{ announcementText | escape }}
+            </span>
+        {% if announcementLink != blank %}
+            </a>
+        {% endif %}
+    </div>
+  {% endif %}
+
+  <header>
+    {% render 'navbar' %}
+  </header>
+</section>
+
+{% schema %}
+  {
+    "name": "Header",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Menu"
+      },
+      {
+        "type": "link_list",
+        "id": "menu",
+        "label": "Menu",
+        "default": "main-menu"
+      },
+      {
+        "type": "header",
+        "content": "Announcement bar"
+      },
+      {
+        "type": "checkbox",
+        "id": "show_announcement",
+        "label": "Show announcement",
+        "default": false
+      },
+      {
+        "type": "text",
+        "id": "announcement_text",
+        "label": "Announcement text",
+        "default": "Announce something here"
+      },
+      {
+        "type": "url",
+        "id": "announcement_link",
+        "label": "Announcement link",
+        "info": "Optional"
+      },
+      {
+        "type": "color",
+        "id": "announcement_bg_color",
+        "label": "Announcement background color",
+        "default": "#ffffff"
+      },
+      {
+        "type": "color",
+        "id": "announcement_color",
+        "label": "Announcement text color",
+        "default": "#ffffff"
+      },
+      {
+        "type": "header",
+        "content": "Logo"
+      },
+      {
+        "type": "image_picker",
+        "id": "logo",
+        "label": "Logo image"
+      },
+      {
+        "type": "range",
+        "id": "logo_max_width",
+        "min": 20,
+        "max": 200,
+        "step": 2,
+        "unit": "px",
+        "label": "Custom logo width",
+        "default": 100
+      },
+      {
+        "type": "header",
+        "content": "Shipping Bar"
+      },
+      {
+        "type": "checkbox",
+        "id": "is_free_shipping_bar",
+        "label": "free shipping bar",
+        "default": false
+      },
+      {
+        "type": "text",
+        "id": "promote_free_shipping_txt",
+        "label": "message to promote free shipping"
+      },
+      {
+        "type": "text",
+        "id": "unlocked_free_shipping_txt",
+        "label": "message for unlock free shipping"
+      },
+      {
+        "type": "range",
+        "id": "free_shipping_treshold",
+        "min": 0,
+        "max": 200,
+        "step": 5,
+        "unit": "Eur",
+        "label": "treshold free shipping",
+        "default": 50
+      }
+    ]
+  }
+{% endschema %}

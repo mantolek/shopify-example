@@ -1,0 +1,132 @@
+{% case section.settings.width %}
+    {% when 1 %}
+        {%- assign container_width = '12' -%}
+    {% when 2 %}
+        {%- assign container_width = '10' -%}
+    {% when 3 %}
+        {%- assign container_width = '8' -%}
+    {% when 4 %}
+        {%- assign container_width = '6' -%}
+    {% when 5 %}
+        {%- assign container_width = '4' -%}
+{% endcase %}
+
+{% style %}
+
+.h2__fontSize {
+    font-size: {{section.settings.h2-font-size}}px;
+}
+
+.p__fontSize {
+    font-size: {{section.settings.p-font-size}}px;
+}
+
+{% endstyle %}
+
+<div class="w-100 my-3">
+    <div class="row {{section.settings.position-container}}">
+        <div class="col col-{{container_width}} {{section.settings.position-text}} border p-3">
+            <h2 class="h2__fontSize">{{ section.settings.title }}</h2>
+            <p class="p__fontSize m-0">{{ section.settings.paragraph }}</p>
+        </div>
+    </div>
+
+</div>
+
+
+{% schema %}
+
+{
+    "name": "Custom HTML",
+    "settings": [
+        {
+            "type": "header",
+            "content": "Texts"
+        }, {
+            "type": "text",
+            "id": "title",
+            "label": "Heading",
+            "default": "Random Title"
+        }, {
+            "type": "text",
+            "id": "paragraph",
+            "label": "Paragraph",
+            "default": "Random text"
+        }, {
+            "type": "header",
+            "content": "Container and positions"
+        }, {
+            "type": "range",
+            "id": "width",
+            "min": 1,
+            "max": 4,
+            "step": 1,
+            "unit": "px",
+            "label": "Width of the container",
+            "default": 1
+        }, {
+            "type": "radio",
+            "id": "position-container",
+            "label": "Position container",
+            "default": "justify-content-center",
+            "options": [
+                {
+                    "value": "justify-content-start",
+                    "label": "Left"
+                }, {
+                    "value": "justify-content-center",
+                    "label": "Center"
+                }, {
+                    "value": "justify-content-end",
+                    "label": "Right"
+                }
+            ]
+        }, {
+            "type": "radio",
+            "id": "position-text",
+            "label": "Position text",
+            "default": "text-center",
+            "options": [
+                {
+                    "value": "text-left",
+                    "label": "Left"
+                }, {
+                    "value": "text-center",
+                    "label": "Center"
+                }, {
+                    "value": "text-right",
+                    "label": "Right"
+                }
+            ]
+        }, {
+            "type": "header",
+            "content": "Text Size"
+        }, {
+            "type": "range",
+            "id": "h2-font-size",
+            "min": 6,
+            "max": 50,
+            "step": 1,
+            "unit": "px",
+            "label": "Title Font Size",
+            "default": 30
+        }, {
+            "type": "range",
+            "id": "p-font-size",
+            "min": 6,
+            "max": 50,
+            "step": 1,
+            "unit": "px",
+            "label": "Paragraph Font Size",
+            "default": 20
+        }
+    ],
+    "presets": [
+        {
+            "name": "Custom HTML",
+            "category": "Random"
+        }
+    ]
+}
+
+{% endschema %}
