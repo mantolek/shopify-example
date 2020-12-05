@@ -22,7 +22,7 @@ Some of the files have code by default and were not touched by me.
 - laravel.mix (for compiling bootstrap)
 
 #### How to use:
-Example: After downloading the repository. Delete folders that are not used by Shopify platform
+Example: After downloading the repository. Delete folders/files that are not used by Shopify platform
 and import the theme to the Shopify platform in theme section.
 
 #### What to check:
