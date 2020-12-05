@@ -6,14 +6,14 @@ Theme was created with Theme Kit.
 Some of the files have code by default and were not touched by me.
 
 #### Files in which I made changes:
-assets/application.js
-layout/theme.liquid
-sections/*
-snippets/*
-src/*
-templates/product.liquid
-templates/customers/login.liquid
-templates/customers/register.liquid
+- assets/application.js
+- layout/theme.liquid
+- sections/*
+- snippets/*
+- src/*
+- templates/product.liquid
+- templates/customers/login.liquid
+- templates/customers/register.liquid
 
 #### Additional libraries:
 - Bootstrap
