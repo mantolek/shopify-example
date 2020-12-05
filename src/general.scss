@@ -11,6 +11,17 @@ a[href="/cart"]:hover {
   }
 }
 
+.shopify-payment-button__button {
+  color: #fff;
+  background-color: #343a40 !important;
+  border-color: #171a1d !important;
+  margin-top: 1rem;
+  
+  &:hover {
+    background-color: #1d2124 !important;
+  }
+}
+
 .container {
   min-height: 23rem;
 }

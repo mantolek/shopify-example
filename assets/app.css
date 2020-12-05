@@ -10915,6 +10915,17 @@ a[href="/cart"]:hover span {
   color: rgba(255, 255, 255, 0.75);
 }
 
+.shopify-payment-button__button {
+  color: #fff;
+  background-color: #343a40 !important;
+  border-color: #171a1d !important;
+  margin-top: 1rem;
+}
+
+.shopify-payment-button__button:hover {
+  background-color: #1d2124 !important;
+}
+
 .container {
   min-height: 23rem;
 }
