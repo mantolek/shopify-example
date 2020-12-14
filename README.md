@@ -1,6 +1,7 @@
 ## Idea:
-- I focused more to present that I know how everything works
-- The styling is basic. Some of the styles are in the folder src in scss files and some in liquid files 
+- Present that I know how everything works
+- Create a simple Theme
+- Training purposes
 
 Theme was created with Theme Kit.
 Some of the files have code by default and were not touched by me.
@@ -23,16 +24,20 @@ Some of the files have code by default and were not touched by me.
 
 #### How to use:
 Example: After downloading the repository. Delete folders/files that are not used by Shopify platform
-and import the theme to the Shopify platform in theme section.
+and import the theme to the Shopify platform in the theme section.
 
 #### What to check:
 1. Sections on Home page:
-- Featured Blog
+- Featured Blog (not finished)
 - Custom HTML
 
-2. Header
-3. Footer
-4. Product page
+2. Header:
+- Navbar
+- Navbar under (It can create adidtional icons. One of them opens the side cart)
+
+3. Footer (not finished yet)
+
+4. Product page (not finished yet)
 - Add button works without page refresh
 - The cart icon on navbar should display 1 more item after clicking the button
 - You need to be logged in in order to add an item
@@ -40,12 +45,5 @@ and import the theme to the Shopify platform in theme section.
 5. Navbar has a possibility to login and register. Based on if user is logged in
 different menu is displayed. (I did not do the same thing to the website content).
 
-
-------------
-
-
-I did not focus on meta tags, global theme styling, translations, aria and making
-namespaces in javascript. The code is only a sample.
-I tried to avoid copying and pasting.
-
-If you would like me to code any specific functionality, please let me know.
+6. Side menu which works and refreshes along with jQuery in application.js. Can be accessed
+through the icon in 'Navbar under'
