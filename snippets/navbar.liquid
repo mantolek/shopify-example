@@ -1,7 +1,7 @@
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+<nav class="navbar navbar-expand-lg" style='background: {{navbarBackground}}'>
     {% comment %}
-            LOGO OR LINK
-          {% endcomment %}
+        LOGO OR LINK
+    {% endcomment %}
     {% if section.settings.logo != blank %}
         <a class="navbar-brand" href="#">
             <img src="{{ section.settings.logo | img_url: 'master' }}" alt="" width="{{ section.settings.logo_max_width }}px"/>
@@ -11,46 +11,48 @@
     {% endif %}
 
     {% comment %}
-            SMALL SCREEN MENU BUTTON
-        {% endcomment %}
-    <button aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation" class="navbar-toggler" data-target="#navbarText" data-toggle="collapse" type="button">
-        <span class="navbar-toggler-icon"></span>
+        SMALL SCREEN MENU BUTTON
+    {% endcomment %}
+    <button aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation" data-target="#navbarText" data-toggle="collapse" type="button" id='hamburger' class="navbar-toggler">
+        <div class="hamburger-line" style='background: {{linkColor}}'></div>
+        <div class="hamburger-line" style='background: {{linkColor}}'></div>
+        <div class="hamburger-line" style='background: {{linkColor}}'></div>
     </button>
 
     {% comment %}
-            IF CUSTOMER ACCOUNT IS REQUIRED
-        {% endcomment %}
+        IF CUSTOMER ACCOUNT IS REQUIRED
+    {% endcomment %}
     {% if shop.customer_accounts_enabled %}
 
-        <div class="collapse navbar-collapse" id="navbarText" style="justify-content: flex-end">
-            <ul class="navbar-nav mr-3">
+        <div class="collapse navbar-collapse justify-content-end" id="navbarText">
+            <ul class="navbar-nav">
                 {% comment %}
-                        IF LOGGED IN
-                      {% endcomment %}
+                    IF LOGGED IN
+                {% endcomment %}
                 {% if customer %}
                     {% for link in linklists[section.settings.menu].links %}
                         {% comment %}
-                                DROPDOWN LINK
-                              {% endcomment %}
+                            DROPDOWN LINK
+                        {% endcomment %}
                         {% if link.links != blank %}
                             <li class="nav-item dropdown">
-                                <a aria-expanded="false" aria-haspopup="true" class="nav-link dropdown-toggle" data-toggle="dropdown" href="#!" role="button">
+                                <a aria-expanded="false" aria-haspopup="true" class="dropdown-toggle " data-toggle="dropdown" href="#!" role="button" style='color: {{linkColor}}'>
                                     {{ link.title }}
                                 </a>
                                 <div aria-labelledby="navbarDropdown" class="dropdown-menu">
                                     {% for childlink in link.links %}
-                                        <a href="{{ childlink.url }}" class="dropdown-item">
+                                        <a href="{{ childlink.url }}" class="dropdown-item" style='color: {{linkColor}}'>
                                             {{ childlink.title }}
                                         </a>
                                     {% endfor %}
                                 </div>
                             </li>
-                            {% comment %}
-                                NORMAL LINK
-                            {% endcomment %}
+                        {% comment %}
+                            NORMAL LINK
+                        {% endcomment %}
                         {% else %}
                             <li class="nav-item">
-                                <a href="{{ link.url }}" class="nav-link">
+                            <a href="{{ link.url }}" style='color: {{linkColor}}'>
                                     {{ link.title }}
                                 </a>
                             </li>
@@ -58,10 +60,10 @@
                     {% endfor %}
 
                     {% comment %}
-                            CART
-                        {% endcomment %}
+                        CART
+                    {% endcomment %}
                     <li class="nav-item">
-                        <a class="nav-link d-flex align-items-center" href="{{ routes.cart_url }}">
+                        <a class="d-flex align-items-center " href="{{ routes.cart_url }}" style='color: {{linkColor}}'>
                             {% if cart.item_count == 0 %}
                                 <span class="item-count"></span>
                             {% else %}
@@ -71,37 +73,36 @@
                                     <span class="item-count">{{ cart.item_count }}</span>
                                 {%- endif -%}
                             {% endif %}
-                            {% render 'icon-cart' %}
+                            {% render 'icon-cart', color: {{linkColor}} %}
                         </a>
                     </li>
 
                     {% comment %}
                         IF LOGGED OUT
-                      {% endcomment %}
+                    {% endcomment %}
                 {% else %}
                     <li class="nav-item">
-                        <a href="{{ routes.account_login_url }}" class="nav-link">{{ 'layout.customer.log_in' | t  }}</a>
+                        <a href="{{ routes.account_login_url }}" style='color: {{linkColor}}'>{{ 'layout.customer.log_in' | t  }}</a>
                     </li>
                     <li class="nav-item">
-                        <a href="{{ routes.account_register_url }}" class="nav-link">{{ 'layout.customer.create_account' | t }}</a>
+                        <a href="{{ routes.account_register_url }}" style='color: {{linkColor}}'>{{ 'layout.customer.create_account' | t }}</a>
                     </li>
                 {% endif %}
             </ul>
 
             {% comment %}
-                    IF LOGGED IN
-                  {% endcomment %}
+                IF LOGGED IN
+            {% endcomment %}
             {% if customer %}
                 <ul class="navbar-nav">
-                    <li class="nav-item dropdown">
-                        <a aria-expanded="false" aria-haspopup="true" class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button">Account</a>
-                        <div aria-labelledby="navbarDropdown" class="dropdown-menu">
-                            <a href="{{ routes.account_logout_url }}" class="dropdown-item">{{ 'layout.customer.log_out' | t }}</a>
+                    <li class="nav-item dropdown ">
+                        <a aria-expanded="false" aria-haspopup="true" class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" style='color: {{linkColor}}'>Account</a>
+                        <div aria-labelledby="navbarDropdown" class="dropdown-menu" style='left: -6rem; background: {{navbarBackground}}'>
+                            <a href="{{ routes.account_logout_url }}" class="dropdown-item" style='color: {{linkColor}}'>{{ 'layout.customer.log_out' | t }}</a>
                         </div>
                     </li>
                 </ul>
             {% endif %}
-
         </div>
     {% endif %}
 </nav>

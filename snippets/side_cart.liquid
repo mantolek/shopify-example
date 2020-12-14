@@ -1,0 +1,69 @@
+{% style %}
+    .side_cart-title  svg {
+        width: {{side_menu_icon_size}}px;
+    }
+{% endstyle %}
+
+<div class="side_cart d-none d-md-block">
+    <div class="side_cart-title d-flex justify-content-center align-items-center border-bottom pb-2 mb-3">
+        {% render 'icon-cart' %}
+        <h4 class='mb-1 ml-3'>Your Cart</h4>
+    </div>
+
+    <form action="/cart" id="cart_form" method="post" novalidate>
+        <div class="d-flex flex-column align-items-start">
+            <div class="cart_wrapper">
+                {% for item in cart.items %}
+
+                    <div>
+                        <div class="d-flex">
+                            <a href="{{ item.url | within: collections.all }}">
+                                <img src="{{ item | img_url: 'medium' }}" alt="{{ item.title | escape }}">
+                            </a>
+
+                            <div class="d-flex flex-column align-items-start px-3" style="max-width: 20rem;">
+                                <h5><a href="{{ item.url }}" class='text-decoration-none text-dark'>{{ item.product.title }} ({{ item.variant.title }})</a></h5>
+                                <p style='font-size: 1.1rem'>{{ item.price | money }}</p>
+    
+                                <div class="d-flex justify-content-between w-100 mt-auto">
+                                    <div class="d-flex" style='font-size: 1.1rem'>
+                                        <p class="update-plus text-white bg-dark" data-id='{{ item.variant_id }}' style='cursor:pointer; width: 1.5rem; text-align: center;'>+</p>
+                                        <p class="current_quantity px-1 px-2 border-top border-bottom">{{ item.quantity }}</p>
+                                        <p class="update-minus text-white bg-dark" data-id='{{ item.variant_id }}' style='cursor:pointer; width: 1.5rem; text-align: center;'>-</p>
+                                    </div>
+
+                                    <a href="/cart/change?line={{ forloop.index }}&amp;quantity=0" class="remove_btn" data-id='{{ item.variant_id }}'>
+                                        {% render 'icon-bin'%}
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="d-flex mt-2" style='font-size: 1.1rem'>
+                            {% if item.original_line_price != item.line_price %}
+                                <s class='original_line_price mr-2'>Before: {{ item.original_line_price | money }}</s>
+                            {% endif %}
+                            <p>Now: {{ item.line_price | money }}</p>
+                        </div>
+
+                        <div class="d-flex flex-column">
+                            {% for discount in item.discounts %}
+                                <p>- {{ discount.title }}</p>
+                            {% endfor %}
+                        </div>
+                    </div>
+
+                {% endfor %}
+            </div>
+
+            <div class="cart_finalInfo border-top pt-2 mt-2 w-100">
+                <h4>Total: <span class='total_price mb-2'>{{cart.total_price | money}}</span></h4>
+                <button name="checkout" type="submit" class="btn btn-dark mr-2">Checkout</button>
+                <button class="close_cart btn btn-dark">Close</button>
+
+                <!-- <input type="number" name="updates[]" id="updates_{{ item.key }}" value="{{ item.quantity }}" min="0">
+                <button name="update" type="submit" class="btn btn-dark mt-3">Update</button> -->
+            </div>
+        </div>
+    </form>
+</div>

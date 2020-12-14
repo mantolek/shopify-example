@@ -1,22 +1,60 @@
+// RESET
+p {
+  padding: 0;
+  margin: 0;
+}
+
 svg {
-  fill: #9a9da0;
+  cursor: pointer;
 }
 
-a[href="/cart"]:hover {
-  svg {
-    fill: rgba(255, 255, 255, 0.75);
-  }
-  span {
-    color: rgba(255, 255, 255, 0.75);
+// NAVIGATION
+#hamburger {
+  padding:0;
+  background-color: transparent;
+
+  .hamburger-line {
+    background: #000;
+    height: 0.1rem;
+    width: 2rem;
+    margin: .4rem;
   }
 }
 
+.dropdown{
+  .dropdown-menu {
+    .dropdown-item:hover, .dropdown-item:active {
+      background: transparent !important;
+      color: #000;
+    }
+  }
+}
+
+.nav-item {
+  a, span {
+    position: relative;
+
+    &:hover {
+      text-decoration: none !important;
+    }
+  }
+}
+
+@media only screen and (min-width: 768px) {
+  .navbar-nav {
+    .nav-item {
+      margin-left: 1rem;
+    }
+  }
+}
+
+// GENERAL 
 .shopify-payment-button__button {
   color: #fff;
   background-color: #343a40 !important;
   border-color: #171a1d !important;
   margin-top: 1rem;
-  
+
   &:hover {
     background-color: #1d2124 !important;
   }

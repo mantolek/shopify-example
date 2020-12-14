@@ -4,25 +4,81 @@
     assign announcementText = section.settings.announcement_text
     assign announcementBgColor = section.settings.announcement_bg_color
     assign announcementColor = section.settings.announcement_color
+    assign announcementPadding = section.settings.announcement_padding
+
+    assign shippingBar = section.settings.shipping_bar
+    assign shippingPromoteTxt = section.settings.promote_shipping_txt | escape
+    assign shippingUnlockedTxt = section.settings.unlocked_shipping_txt | escape
+    assign shippingTreshold = section.settings.shipping_treshold | times: 100
+    assign value_left = shippingTreshold | minus: cart.total_price
+    assign value_left_money = value_left | money
+    assign shippingBgColor = section.settings.shipping_bg_color
+    assign shippingColor = section.settings.shipping_color
+    assign shippingPadding = section.settings.shipping_padding
+
+    assign swapPlace = section.settings.swap_place
+
+    assign navbarUnder = section.settings.navbar_under
+    assign navbarUnderStyle = section.settings.navbar_under_style
+    assign navbarUnderBorder = section.settings.navbar_under_border
+    
+    assign navbarBackground = section.settings.navbar_background
+    assign linkColor = section.settings.link_color
 -%}
 
-<section data-section-id="{{ section.id }}">
-  {% if announcementBar %}
-    <div class="d-flex justify-content-center" style="background-color: {{announcementBgColor}}">
-        {% if announcementLink != blank %}
-            <a href="{{ announcementLink }}">
-        {% endif %}
-            <span style="color:{{announcementColor}}">
-                {{ announcementText | escape }}
-            </span>
-        {% if announcementLink != blank %}
-            </a>
-        {% endif %}
-    </div>
+{% style %}
+  {% if navbarUnderBorder %}
+  .navbar_under_border {
+    border-bottom: .3rem solid #000;
+  }
   {% endif %}
+{% endstyle %}
+
+<section data-section-id="{{ section.id }}">
+  <div class="d-flex flex-column {% if swapPlace %} flex-column-reverse {% endif %}">
+    {% comment %}
+      ANNOUNCEMENT BAR
+    {% endcomment %}
+    {% if announcementBar %}
+      <div class="d-flex justify-content-center" style="background-color: {{announcementBgColor}}; padding: {{announcementPadding}}px">
+          {% if announcementLink != blank %}
+              <a href="{{ announcementLink }}">
+          {% endif %}
+              <span style="color:{{announcementColor}}">
+                  {{ announcementText | escape }}
+              </span>
+          {% if announcementLink != blank %}
+              </a>
+          {% endif %}
+      </div>
+    {% endif %}
+
+    {% comment %}
+      SHIPPING BAR
+    {% endcomment %}
+    {% if shippingBar %}
+      <div class="d-flex justify-content-center shipping-bar" data-promote={{shippingPromoteTxt}} data-unlock={{shippingUnlockedTxt}} data-treshold={{shippingTreshold}} style="background-color: {{shippingBgColor}}; padding: {{shippingPadding}}px">
+        {% if value_left  <= 0 %}
+          <p class='unlock' style="color:{{shippingColor}}">{{ shippingUnlockedTxt }}</p>
+        {% else %}
+          <p class='promote' style="color:{{shippingColor}}">{{ shippingPromoteTxt | replace: '[value]', value_left_money}} </p>
+        {% endif %}
+      </div>
+    {% endif %}
+  </div>
 
   <header>
-    {% render 'navbar' %}
+    {% render 'navbar' navbarBackground: navbarBackground, linkColor: linkColor %}
+    {% if navbarUnder %}
+      <div style='padding: 0.5rem 1rem' class="navbar_under_border">
+        {% case navbarUnderStyle %}
+        {% when 'one' %}
+          {% render 'navbar_under-one' section: section %}
+        {% when 'two' %}
+          {% render 'navbar_under-two' section: section %}
+        {% endcase %}
+        </div>
+    {% endif %}
   </header>
 </section>
 
@@ -32,6 +88,25 @@
     "settings": [
       {
         "type": "header",
+        "content": "Logo"
+      },
+      {
+        "type": "image_picker",
+        "id": "logo",
+        "label": "Logo image"
+      },
+      {
+        "type": "range",
+        "id": "logo_max_width",
+        "min": 20,
+        "max": 200,
+        "step": 2,
+        "unit": "px",
+        "label": "Custom logo width",
+        "default": 100
+      },
+      {
+        "type": "header",
         "content": "Menu"
       },
       {
@@ -39,6 +114,18 @@
         "id": "menu",
         "label": "Menu",
         "default": "main-menu"
+      },
+      {
+        "type": "color",
+        "id": "navbar_background",
+        "label": "Navbar background color",
+        "default": "#000000"
+      },
+      {
+        "type": "color",
+        "id": "link_color",
+        "label": "Link color",
+        "default": "#ffffff"
       },
       {
         "type": "header",
@@ -66,7 +153,7 @@
         "type": "color",
         "id": "announcement_bg_color",
         "label": "Announcement background color",
-        "default": "#ffffff"
+        "default": "#000000"
       },
       {
         "type": "color",
@@ -75,23 +162,134 @@
         "default": "#ffffff"
       },
       {
-        "type": "header",
-        "content": "Logo"
+        "type": "range",
+        "id": "announcement_padding",
+        "min": 0,
+        "max": 20,
+        "step": 1,
+        "unit": "px",
+        "label": "Announcement space around",
+        "default": 0
       },
       {
-        "type": "image_picker",
-        "id": "logo",
-        "label": "Logo image"
+        "type": "header",
+        "content": "Shipping Bar"
+      },
+      {
+        "type": "checkbox",
+        "id": "shipping_bar",
+        "label": "Free shipping bar",
+        "default": false
+      },
+      {
+        "type": "text",
+        "id": "promote_shipping_txt",
+        "label": "Message to promote free shipping",
+        "info": "Include [value] as a word for the treshold amount."
+      },
+      {
+        "type": "text",
+        "id": "unlocked_shipping_txt",
+        "label": "Message for unlock free shipping"
       },
       {
         "type": "range",
-        "id": "logo_max_width",
-        "min": 20,
+        "id": "shipping_treshold",
+        "min": 0,
         "max": 200,
-        "step": 2,
+        "step": 5,
+        "unit": "Eur",
+        "label": "Treshold free shipping",
+        "default": 50
+      },
+      {
+        "type": "color",
+        "id": "shipping_bg_color",
+        "label": "Shipping background color",
+        "default": "#ffffff"
+      },
+      {
+        "type": "color",
+        "id": "shipping_color",
+        "label": "Shipping text color",
+        "default": "#000000"
+      },
+      {
+        "type": "range",
+        "id": "shipping_padding",
+        "min": 0,
+        "max": 20,
+        "step": 1,
         "unit": "px",
-        "label": "Custom logo width",
-        "default": 100
+        "label": "Shipping space around",
+        "default": 0
+      },
+      {
+        "type": "checkbox",
+        "id": "swap_place",
+        "label": "Swap announcment bar with shipping bar",
+        "default": false
+      },
+      {
+        "type": "header",
+        "content": "Navbar Under"
+      },
+      {
+        "type": "checkbox",
+        "id": "navbar_under",
+        "label": "Show navbar under",
+        "default": false
+      },
+      {
+        "type": "radio",
+        "id": "navbar_under_style",
+        "label": "Style of navbar under",
+        "options": [
+          { "value": "one", "label": "Style one" },
+          { "value": "two", "label": "Style two" }
+        ],
+        "default": "one"
+      },
+      {
+        "type": "checkbox",
+        "id": "navbar_under_border",
+        "label": "Navbar under border",
+        "default": true
+      }
+    ],
+    "max_blocks": 4, 
+    "blocks": [
+      {
+        "type": "cart",
+        "name": "Cart Dropdown",
+        "limit": 1,
+        "settings": [
+          {
+            "type": "range",
+            "id": "navbar_icon_size",
+            "min": 12,
+            "max": 40,
+            "step": 1,
+            "unit": "px",
+            "label": "Navbar icon size",
+            "default": 20
+          },
+          {
+            "type": "range",
+            "id": "side_menu_icon_size",
+            "min": 12,
+            "max": 40,
+            "step": 1,
+            "unit": "px",
+            "label": "Side menu icon size",
+            "default": 20
+          }
+        ]
+      },
+      {
+        "type": "currency",
+        "name": "Currencies switcher",
+        "limit": 1
       }
     ]
   }
