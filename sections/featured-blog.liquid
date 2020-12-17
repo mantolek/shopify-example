@@ -21,13 +21,14 @@
         <h2>{{ section.settings.title | escape }}</h2>
     {% endif %}
 
-    <div class="featured-blog featured-blog--{{ section.id }}">
+    <div class="featured-blog">
 
       {% if blog.articles_count != 0 and blog.articles_count != empty %}
 
           <ul class="post_width {{ post_width }} p-0 justify-content-between align-items-center">
+
               {% for article in blog.articles limit: post_limit %}
-                  <li class="blog-post__item p-3">
+                  <li class="blog-post__item p-3 my-3">
 
                       {% comment %}
                         IMAGE
@@ -35,7 +36,7 @@
                       {% if section.settings.blog_show_image != blank %}
                           <a href="{{ article.url }}">
                               {% if article.image %}
-                                  <img class="img-fluid" src="{{ article.image.src | img_url: '800x600', crop:'center' }}" alt="{{ article.image.alt | escape }}">
+                                  <img class="img-fluid {{section.settings.img_animation}}" src="{{ article.image.src | img_url: '800x600', crop:'center' }}" alt="{{ article.image.alt | escape }}">
                               {% endif %}
                               <h3 class='text-dark my-2'>{{ article.title }}</h3>
                           </a>
@@ -155,6 +156,23 @@
             "id": "show_view_all",
             "label": "Show 'View all' button",
             "default": true
+        }, {
+            "type": "header",
+            "content": "Image animation"
+        }, {
+            "type": "radio",
+            "id": "img_animation",
+            "label": "Image animation",
+            "default": "rotate",
+            "options": [
+                {
+                    "value": "rotate",
+                    "label": "Rotate"
+                }, {
+                    "value": "around",
+                    "label": "Shadow"
+                }
+            ]
         }
     ],
     "presets": [

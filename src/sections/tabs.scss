@@ -1,0 +1,25 @@
+.tab_sidebar_container {
+    position: relative;
+
+    .tab_sidebar_wrapper {
+        position: sticky;
+        top: 1rem;
+    }
+}
+
+.tab_content_wrapper {
+    height: 15rem;
+    overflow-y: auto;
+    margin-bottom: 5rem;
+
+    .tab-content {
+        &:not(.active) > * {
+            visibility: hidden;
+            height: 0;
+        }
+        &.active {
+            visibility: visible;
+            height: auto;
+        }
+    }
+}

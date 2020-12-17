@@ -1,0 +1,140 @@
+{% for block in section.blocks %}
+  {% capture sidebar %}
+    {{ sidebar }}
+    
+    {% if block.type == 'lvl0' %}
+      <div>
+      {% if block.settings.title_text != blank %}
+        <a href="#tab-{{ block.id }}" class="tab_select {% if forloop.index0 == 0 %} active{% endif %}">{{ block.settings.title_text }}</a>
+        <ul>
+      {% endif %}
+    
+    {% elsif block.type == 'lvl1' %}
+      <li>
+        <a class="tab_select" href="#block-{{ block.id }}">{{ block.settings.title_text }}</a>
+      </li>
+    {% endif %}
+
+    {% assign next_index = forloop.index0 | plus: 1 %}
+    {% if section.blocks[next_index] == blank or section.blocks[next_index].type == 'lvl0' %}
+      </ul>
+      </div>
+    {% endif %}
+  {% endcapture %}
+ 
+
+  {% capture content %}
+    {{ content }}
+
+    {% if block.type == 'lvl0' %}
+
+      <div class="tab-content {% if forloop.index0 == 0 %} active{% endif %}" id="tab-{{ block.id }}">
+        {% if block.settings.title_text != blank %}
+            <h2>{{ block.settings.title_text }}</h2>
+        {% endif %}
+        {% if block.settings.content_text != blank %}
+            {{ block.settings.content_text }}
+        {% endif %}
+        {% if section.blocks[next_index] == blank or section.blocks[next_index].type == 'lvl0' %}
+          </div>
+        {% endif %}
+
+    {% elsif block.type == 'lvl1' %}
+
+      <div id="block-{{ block.id }}">
+        {% if block.settings.page_text != blank %}
+          <h3>{{ block.settings.page_text }}</h2>
+        {% endif %}
+        {% if block.settings.content_text != blank %}
+          {{ block.settings.content_text }}
+        {% endif %}
+      </div>
+
+      {% assign next_index = forloop.index0 | plus: 1 %}
+      {% if section.blocks[next_index] == blank or section.blocks[next_index].type == 'lvl0' %}
+        </div>
+      {% endif %}
+
+    {% endif %}
+
+  {% endcapture %}
+{% endfor %}
+
+<div class="row my-4">
+  <div class="tab_sidebar_container">
+    <div class="tab_sidebar_wrapper">{{sidebar}}</div>
+  </div>
+  <div class="tab_content_wrapper">{{content}}</div>
+</div>
+
+{% schema %}
+{
+    "name": "Tabs",
+    "settings": [
+        {
+        "type": "header",
+        "content": "Tabs title"
+      },
+      {
+        "type": "text",
+        "id": "tabs_title",
+        "label": "Tabs title",
+        "default": "Tabs title"
+      }
+    ],
+    "blocks": [
+        {
+        "type": "lvl0",
+        "name": "Tab big",
+        "settings": [
+            {
+                "type": "text",
+                "id": "title_text",
+                "label": "Title",
+                "default": "Ttitle"
+            },
+            {
+                "type": "text",
+                "id": "page_text",
+                "label": "Page title",
+                "default": "Page title"
+            },
+            {
+                "type": "richtext",
+                "id": "content_text",
+                "label": "Page content"
+            }
+        ]
+        },
+        {
+        "type": "lvl1",
+        "name": "Tab small",
+        "settings": [
+            {
+                "type": "text",
+                "id": "title_text",
+                "label": "Title",
+                "default": "Title"
+            },
+            {
+                "type": "text",
+                "id": "page_text",
+                "label": "Page title",
+                "default": "Page title"
+            },
+            {
+                "type": "richtext",
+                "id": "content_text",
+                "label": "Page content"
+            }
+          ]
+        }
+    ],
+    "presets": [
+        {
+            "name": "Tabs",
+            "category": "Tabs"
+        }
+    ]
+}
+{% endschema %}

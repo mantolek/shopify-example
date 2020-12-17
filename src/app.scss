@@ -3,7 +3,10 @@
 
 // @import './reset.scss';
 @import './general.scss';
-@import './featured-blog.scss';
+
+// sections
+@import './sections/featured-blog.scss';
+@import './sections/tabs.scss';
 
 // components
 @import './components/side_bar.scss';

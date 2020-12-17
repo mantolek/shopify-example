@@ -8,6 +8,10 @@ svg {
   cursor: pointer;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 // NAVIGATION
 #hamburger {
   padding:0;
@@ -38,6 +42,10 @@ svg {
       text-decoration: none !important;
     }
   }
+}
+
+a:hover {
+  text-decoration: none !important;
 }
 
 @media only screen and (min-width: 768px) {

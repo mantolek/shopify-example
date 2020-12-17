@@ -229,12 +229,38 @@ theme.Actions = (function() {
     });
   }
 
+  function tabSwitcher(){
+    const tabs = $('.tab_sidebar_wrapper');
+    const contents = $('.tab_content_wrapper');
+
+    tabs.find('.tab_select')
+    .on('click', function (e) {
+      // e.preventDefault();
+
+      tabs.find('.tab_select.active').removeClass('active');
+      $(this).addClass('active');
+
+      contents.find('.tab-content.active').removeClass('active');
+
+      let id = $(this).attr("href")
+      let el = contents.find(id)
+
+      if(el.hasClass('tab-content')){
+        el.addClass('active')
+      } else {
+        el.parent().addClass('active')
+      }
+     
+    });
+  }
+
   function init(){
     addToCart()
     underNavbarBtns()
     removeItemInCart()
     updateItemInCart()
     currencySwitcher()
+    tabSwitcher()
     // refreshCart()
   }
 
